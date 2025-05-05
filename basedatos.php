@@ -1,4 +1,36 @@
 <?php
+
+$server = "localhost";
+$user = "root";
+$password = "";
+$database = "cooperativa";  
+
+function crearDB($server, $user, $password, $database) {
+    try {
+        
+        $db = new PDO("mysql:host=$server", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+       
+        $stmt = $db->prepare("CREATE DATABASE IF NOT EXISTS $database");
+        $stmt->execute();    
+        echo "Base de datos '$database' creada o ya existente.<br>";
+
+    } catch (PDOException $e) {
+        echo "Error al crear la base de datos: " . $e->getMessage();
+    }
+}
+
+function conexionBD($server, $user, $password, $database) {
+    try {
+        $db = new PDO("mysql:host=$server;dbname=$database", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        //echo "Conectado a la base de datos '$database' correctamente.<br>";
+        return $db;
+    } catch (PDOException $e) {
+        die("Error en la conexión: " . $e->getMessage());
+    }
+}
 function crearTablas($database, $db) {
   
     echo "comprobando que existe la tabla usuario";
